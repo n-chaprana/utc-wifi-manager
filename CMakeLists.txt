@@ -1,0 +1,27 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+PROJECT(utc-wifi-manager C)
+
+SET(TC_TEST "utc-wifi-manager")
+ADD_DEFINITIONS("-DUSE_DLOG")
+
+SET(dependents "capi-base-common capi-network-wifi-manager capi-system-info glib-2.0 gio-2.0 dlog")
+SET(pc_dependents "capi-base-common")
+
+INCLUDE(FindPkgConfig)
+PKG_CHECK_MODULES(TC_TEST_PKG REQUIRED ${dependents})
+
+FOREACH(flag ${TC_TEST_PKG_CFLAGS})
+	SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
+ENDFOREACH(flag)
+
+SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} -Wall -fPIE")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS}")
+SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--as-needed -pie")
+
+FILE(GLOB TC_TEST_SRCS *.c)
+SET(TC_TEST_SRCS ${TC_TEST_SRCS})
+
+ADD_EXECUTABLE(${TC_TEST} ${TC_TEST_SRCS})
+TARGET_LINK_LIBRARIES(${TC_TEST} ${TC_TEST_LDFLAGS} ${TC_TEST_PKG_LDFLAGS} -ldl -lgcov)
+
+INSTALL(TARGETS ${TC_TEST} RUNTIME DESTINATION /usr/bin)
