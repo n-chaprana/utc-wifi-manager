@@ -530,6 +530,8 @@ int utc_wifi_manager_scan_specific_ap_p(void)
 		return -1;
 	}
 
+	PRINT("specfic-scan AP [%s]", ap_name);
+
 	ret = wifi_manager_scan_specific_ap(g_hWifi, ap_name, wifi_manager_scanned_specific_ap_callback, NULL);
 	PRINT_RETURN("wifi_manager_scan_specific_ap", ret);
 	RUN_GMAIN_LOOP;
@@ -1488,6 +1490,8 @@ int utc_wifi_manager_connect_hidden_ap_p(void)
 		return -1;
 	}
 
+	PRINT("hidden-connect AP [%s] Password [%s]", ap_name, ap_passphrase);
+
 	if (!g_bFeatureWifi) {
 		ret = wifi_manager_connect_hidden_ap(g_hWifi, ap_name, 2, ap_passphrase, wifi_manager_connected_callback, NULL);
 		CHECK_RETURN("wifi_manager_connect_hidden_ap", ret, WIFI_MANAGER_ERROR_NOT_SUPPORTED);
@@ -2171,6 +2175,8 @@ int utc_wifi_manager_specific_scan_set_ssid_p(void)
 		return -1;
 	}
 
+	PRINT("specific-scan AP [%s]", ssid);
+
 	ret = wifi_manager_specific_scan_create(g_hWifi, &specific_scan);
 	CHECK_RETURN("wifi_manager_specific_scan_create", ret, WIFI_MANAGER_ERROR_NONE);
 
@@ -2281,6 +2287,8 @@ int utc_wifi_manager_specific_ap_start_multi_scan_p(void)
 		FPRINTF("[%s:%d] wifi_manager_get_value_from_configfile(WIFI_WPSACCESSPOINTNAME) failed \\n", __FILE__, __LINE__);
 		return -1;
 	}
+
+	PRINT("specific-ap-multi-scan AP [%s]", ssid);
 
 	ret = wifi_manager_specific_scan_create(g_hWifi, &specific_scan);
 	CHECK_RETURN("wifi_manager_specific_scan_create", ret, WIFI_MANAGER_ERROR_NONE);

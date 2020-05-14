@@ -98,6 +98,15 @@ wifi_manager_config_h g_hWifiConfig;
 	}\
 }
 
+#define PRINT(format, args...) {\
+	if (WIFI_MANAGER_DEBUG) {\
+		printf("[%s:%d] "format"\n",\
+			__func__, __LINE__, ## args);\
+		dlog_print(DLOG_INFO, "NativeTCT", "[%s:%d] "format,\
+			__func__, __LINE__, ## args);\
+	}\
+}
+
 #define CHECK_RETURN(api, ret, val) {\
 	if (ret != val) {\
 		FPRINTF("[%s:%d] %s failed, error returned = %s\\n",\

@@ -101,7 +101,7 @@ bool wifi_manager_get_value_from_configfile(char* key, char* value)
 	while (!feof(pfilePtr)) {
 		if (fgets(szConfigLine, CONFIG_LINE_LEN_MAX, pfilePtr) != NULL) {
 			pszKey = strtok_r(szConfigLine, pszDelim, &temp);
-			pszValue = strtok_r(NULL, pszDelim, &temp);
+			pszValue = strtok_r(NULL, "\n", &temp);
 			if (pszKey != NULL) {
 				if ((pszValue != NULL) && (strstr(pszKey, key) != NULL) ) {
 					memset(value, 0, CONFIG_VALUE_LEN_MAX);
@@ -412,6 +412,8 @@ static int _wifi_manager_pre_connect(void)
 			FPRINTF("[%s:%d] wifi_manager_get_value_from_configfile(WIFI_ACCESSPOINTPIN) failed \\n", __FILE__, __LINE__);
 			return -1;
 		}
+
+		PRINT("pre-connect AP [%s] Password [%s]", ap_name, ap_passphrase);
 
 		ret = wifi_manager_scan(g_hWifi, wifi_manager_scanned_callback, NULL);
 		PRINT_RETURN("wifi_manager_scan", ret);
